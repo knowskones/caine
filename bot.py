@@ -38,6 +38,9 @@ def NOTIFIED_ADD_CONTACT(op):
 def RECEIVE_MESSAGE(op):
     try:
         msg = op.message
+        msg.from_ = msg._from
+        if msg.toType == 0:
+            msg.to = msg.from_
         text = msg.text.rstrip()
         commands = [c[0] for c in do.custom_commands]
         responses = [r[1] for r in do.custom_commands]
@@ -52,7 +55,7 @@ def SEND_MESSAGE(op):
     try:
         msg = op.message
         msg.from_ = msg._from
-        if msg.toType == 0:
+        if msg.toType == 0 and (msg.from_!=profile.mid):
             msg.to = msg.from_
         text = msg.text.rstrip()
         if text.lower() == "help":
